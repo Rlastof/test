@@ -1,24 +1,22 @@
 fx_version 'cerulean'
 game 'gta5'
 
-author 'Sairon'
-description 'Sairon Backdoor'
+name 'Backdoor Scanner'
+author 'SaironV'
+description 'A tool for scanning and managing scripts in FiveM'
 version '1.0.0'
 
-shared_script 'config.lua' 
-
-server_scripts {
-    'server.lua'
-}
-
 client_scripts {
+    'config.lua',
     'client.lua'
 }
+
+server_script 'server.lua'
+
+ui_page 'html/index.html'
 
 files {
     'html/index.html',
     'html/style.css',
     'html/script.js'
 }
-
-ui_page 'html/index.html'

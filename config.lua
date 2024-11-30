@@ -1,6 +1,4 @@
--- config.lua
-
 Config = {}
-Config.CommandName = "scanner"
-Config.DebugMode = true
-Config.AdminOnly = true
+Config.CommandName = "scanner" -- Komut adı (örneğin, /scanner)
+Config.DebugMode = true -- Debug mesajlarının konsola yazdırılması (true/false)
+Config.AdminOnly = true -- Komutun sadece adminler tarafından kullanılabilmesi (true/false)

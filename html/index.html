@@ -3,23 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Backdoor Scanner Report</title>
+    <title>Backdoor Scanner</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="report-container">
-        <h1>Backdoor Scanner Raporu</h1>
-        <div id="report">
-            <p>Rapor yükleniyor...</p>
-        </div>
-        <button id="close-button">Kapat</button> <!-- Kapama butonu eklendi -->
-    </div>
-    <div id="details-modal" class="hidden">
-        <div id="modal-content">
-            <h2 id="script-name">Script Detayları</h2>
-            <div id="script-details"></div>
-            <button id="close-modal">Kapat</button>
-        </div>
+    <div id="report-container" style="display: none;">
+        <h1>Backdoor Scanner Report</h1>
+        <div id="report">Rapor yükleniyor...</div>
+        <button id="close-button">Kapat</button>
     </div>
     <script src="script.js"></script>
 </body>
