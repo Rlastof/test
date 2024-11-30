@@ -55,47 +55,63 @@ local function scan_scripts()
     for _, resource in ipairs(GetResources()) do
         local path = GetResourcePath(resource)
         if path then
+            debugLog("Scanning resource: " .. resource) -- Tarama sırasında loglama
             local manifest = path .. "/fxmanifest.lua"
             local scan_result = scan_file(manifest)
             results.details[resource] = scan_result
             results[scan_result.status] = (results[scan_result.status] or 0) + 1
+        else
+            debugLog("Resource path not found for: " .. resource) -- Path bulunamazsa loglama
         end
     end
-    debugLog("Scanning completed.")
+    debugLog("Scanning completed. Results: " .. json.encode(results)) -- Tarama sonrası sonuç loglama
     return results
 end
 
+-- Yeni eklenen loglama ve düzenleme: Komut tetikleyicisi
 RegisterCommand(Config.CommandName, function(source, args, rawCommand)
     if Config.AdminOnly and not isAdmin(source) then
         TriggerClientEvent("scanner:notify", source, "Bu komutu yalnızca adminler kullanabilir.")
-        debugLog("Non-admin player attempted to use the command.")
+        debugLog("Non-admin player attempted to use the command.") -- Log: Admin olmayan denemesi
         return
     end
 
-    debugLog("Command executed: " .. Config.CommandName)
+    debugLog("Command executed: " .. Config.CommandName) -- Komut çalıştırıldığında log
 
     local report_id = report_count
     local report = reports[report_id]
-    
+
+    -- Eğer rapor yoksa istemciye bildir
     if not report then
         debugLog("No report found for ID: " .. report_id)
+        TriggerClientEvent("scanner:notify", source, "Rapor bulunamadı.")
         return
     end
 
+    -- Rapor istemciye gönderiliyor
+    debugLog("Sending report to client: " .. json.encode(report))
     TriggerClientEvent("scanner:showReport", source, {
         safe = report.safe,
         suspicious = report.suspicious,
         malicious = report.malicious,
         details = report.details
     })
-    debugLog("Report sent to client.")
+    debugLog("Report sent to client successfully.") -- Log: Başarılı gönderim
 end)
 
+-- "onResourceStart" için herhangi bir otomatik tetikleme yapılmaz.
 AddEventHandler("onResourceStart", function(resource)
+    if resource == GetCurrentResourceName() then
+        debugLog("Resource started: " .. resource) -- Log: Resource başladı
+    end
+end)
+
+-- Resource tetikleyicisi: Rapor oluşturma
+AddEventHandler("onResourceStop", function(resource)
     if resource == GetCurrentResourceName() then return end
     report_count = report_count + 1
     local result = scan_scripts()
     reports[report_count] = result
     SaveResourceFile(GetCurrentResourceName(), "raporlar/rapor_" .. report_count .. ".json", json.encode(result), -1)
-    debugLog("New report generated: #" .. report_count)
+    debugLog("New report generated: #" .. report_count) -- Log: Yeni rapor
 end)
