@@ -1,17 +1,13 @@
+// NUI'den gelen mesajları dinle
 window.addEventListener('message', (event) => {
     const data = event.data;
 
     if (data.type === 'report') {
-        console.log("[Backdoor Scanner] Report data received:", data.report);
+        const reportContainer = document.getElementById('report-container');
+        reportContainer.style.display = 'block'; // Arayüzü aç
 
-        if (!data.report) {
-            console.error("[Backdoor Scanner] Report data is missing or undefined.");
-            document.getElementById('report').innerHTML = "<p>Rapor yüklenemedi. Sunucu ile bağlantıyı kontrol edin.</p>";
-            return;
-        }
-
-        const reportContainer = document.getElementById('report');
-        reportContainer.innerHTML = '';
+        const report = document.getElementById('report');
+        report.innerHTML = ''; // Eski içeriği temizle
 
         const summary = `
             <p><strong>Güvenli Scriptler:</strong> <span class="safe">${data.report.safe}</span></p>
@@ -29,6 +25,17 @@ window.addEventListener('message', (event) => {
             `)
             .join('');
 
-        reportContainer.innerHTML = `<div>${summary}</div><div>${details}</div>`;
+        report.innerHTML = `<div>${summary}</div><div>${details}</div>`;
     }
+});
+
+// Kapama butonunun işlevi
+document.getElementById('close-button').addEventListener('click', () => {
+    fetch('https://scanner/closeModal', { method: 'POST' })
+        .then(() => {
+            console.log("Kapatma isteği gönderildi.");
+        })
+        .catch((err) => {
+            console.error("Kapatma tuşunda bir hata oluştu:", err);
+        });
 });
