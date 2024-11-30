@@ -10,4 +10,4 @@ RegisterCommand("scanscripts", function(source, args, rawCommand)
             ["malicious_script"] = { status = "malicious", details = {"Detected backdoor"} }
         }
     })
-end, true) -- Admin komutu olarak işaretle
+end, true)

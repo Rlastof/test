@@ -9,6 +9,7 @@ body {
 }
 
 #report-container {
+    display: none; /* Varsayılan olarak gizli */
     background: #2c2c3e;
     border-radius: 10px;
     padding: 20px;
@@ -16,6 +17,7 @@ body {
     max-width: 600px;
     text-align: center;
 }
+
 
 button {
     margin-top: 15px;

@@ -3,7 +3,7 @@ window.addEventListener('message', (event) => {
 
     if (data.type === 'report') {
         const reportContainer = document.getElementById('report-container');
-        reportContainer.style.display = 'block';
+        reportContainer.style.display = 'block'; // Arayüzü aç
 
         const report = document.getElementById('report');
         report.innerHTML = `
@@ -18,3 +18,4 @@ document.getElementById('close-button').addEventListener('click', () => {
     document.getElementById('report-container').style.display = 'none';
     fetch('https://scanner/closeModal', { method: 'POST' });
 });
+

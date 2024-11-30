@@ -6,7 +6,6 @@ end
 
 -- Admin kontrolü
 local function isPlayerAdmin()
-    -- Ace Permissions kullanımı: "command" yetkisi varsa admin kabul edilir.
     return IsPlayerAceAllowed(PlayerId(), "command")
 end
 
@@ -44,6 +43,19 @@ end)
 
 RegisterNUICallback("closeModal", function(data, cb)
     debugLog("Closing NUI.")
-    SetNuiFocus(false, false) -- Fare ve klavye girdisini devre dışı bırak
+    SetNuiFocus(false, false) -- Fareyi devre dışı bırak
     cb("ok")
+end)
+
+RegisterCommand(Config.CommandName, function()
+    if Config.AdminOnly and not isPlayerAdmin() then
+        print("[Backdoor Scanner] Bu komut sadece adminler tarafından kullanılabilir.")
+        return
+    end
+
+    debugLog("Opening NUI with command.")
+    SendNUIMessage({
+        type = "open"
+    })
+    SetNuiFocus(true, true) -- Fareyi etkinleştir
 end)
